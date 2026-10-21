@@ -1,0 +1,123 @@
+{
+  "repository": "https://github.com/google-deepmind/mujoco_menagerie",
+  "commit": "cda5236f98383f6fbaa4820c6b18dba892cd087f",
+  "model": "yam_linear_4310.xml",
+  "license": "MIT",
+  "modifications": [],
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 509,
+      "git_blob_sha1": "30691431ea751ae4ad3929415e83208f279c4ac7",
+      "sha256": "9bd5f77be21f48a11d31743ecc705c10e60bee99502e3208a27bf4dc391424f6"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1070,
+      "git_blob_sha1": "12db7704f0a71570309c12f351dd656a8dec3b63",
+      "sha256": "dc46c3a7dc48221aa783e634d15db0f816ba83ba5cdb77bbaa91525c61c7552f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2725,
+      "git_blob_sha1": "e085e282b79c94f1a46df3e62969dd4dcdc8dc7b",
+      "sha256": "ba1b183cb0dfea94e1cc24a584ead6c5957b96bc92cb1eb3a399ed017df1ad86"
+    },
+    {
+      "path": "assets/linear_4310/d405_wrist_linear_4310.stl",
+      "bytes": 469584,
+      "git_blob_sha1": "147b9af8b95c50cc10f36e07659dca46612e0b1e",
+      "sha256": "f01bcd92b447c3a44c1ad9345367628d4157fe4c07b545ccbf9bc4ae81115112"
+    },
+    {
+      "path": "assets/linear_4310/gripper.stl",
+      "bytes": 400084,
+      "git_blob_sha1": "4eb296bec95a128de5dc3d52c3750db7b01bb956",
+      "sha256": "d949c401186197d842ca8f9b23bfcbf24bed8461b421df06093c65e4ead21f5d"
+    },
+    {
+      "path": "assets/linear_4310/tip_left.stl",
+      "bytes": 400084,
+      "git_blob_sha1": "745e8b6f73b87c67918fefde86557b5c3548ebaa",
+      "sha256": "03d94f53d7b5e9e1871ea6f3925c68d7a2f894b08e0c575fa0b9ed4024684ff7"
+    },
+    {
+      "path": "assets/linear_4310/tip_right.stl",
+      "bytes": 400084,
+      "git_blob_sha1": "0ec1224df779136c1b5bfb53af1267f45e832f12",
+      "sha256": "8f620aae9c15e00e2ea4e5bf5e9a49e7edb2d23128b8955cfacc0da8da45c72f"
+    },
+    {
+      "path": "assets/model2.stl",
+      "bytes": 524284,
+      "git_blob_sha1": "d597a051d6dfd2e9b71b2652cada1eb4fdac96f0",
+      "sha256": "5ac61c0313ed00c38655e41681af1b8b307cf8d5ef57209a75f215cea02df754"
+    },
+    {
+      "path": "assets/model2__10.stl",
+      "bytes": 524284,
+      "git_blob_sha1": "b065de193333a5cf1d7221404fb6d6af5eae7e24",
+      "sha256": "b879cc07f547b7a2ac52e428dd206e80a0d4b0e805cb56b9a8230df04a690923"
+    },
+    {
+      "path": "assets/model2__11.stl",
+      "bytes": 248584,
+      "git_blob_sha1": "736495bc495a17404eec1a3ae5190905f744775a",
+      "sha256": "af220d2a51e8444392aef36e2fe4a6f69aed22bc292a7f38e54da3b4f5253434"
+    },
+    {
+      "path": "assets/model2__2.stl",
+      "bytes": 524284,
+      "git_blob_sha1": "2d180f05b010e5151797fd1e80c371fc8488239b",
+      "sha256": "30dab41f14bae95d737abca3c934eb5d570ab107dff0b40952fbdfb9d07eab79"
+    },
+    {
+      "path": "assets/model2__3.stl",
+      "bytes": 80684,
+      "git_blob_sha1": "89c512c0f53733a6956a988c496db1b83830940d",
+      "sha256": "9fd96f5ad387fe7dd96eaa65e386637800e2f5637b6167fbad4ecb37d8598f47"
+    },
+    {
+      "path": "assets/model2__4.stl",
+      "bytes": 80684,
+      "git_blob_sha1": "7186d0fa1b8c22fd43dbf9ee551d14f107f909f3",
+      "sha256": "33c0e7ef538e2c4473efa9c4ef2a8441b6094b65090b4dec71abe82001d974df"
+    },
+    {
+      "path": "assets/model2__5.stl",
+      "bytes": 524284,
+      "git_blob_sha1": "afd1996e7a6ff1fc44a4c44c1af0de6ad1cefa7b",
+      "sha256": "09f08e7dead2d6363618471adadb1b94af39e8056676670f3fd21ec06c197b20"
+    },
+    {
+      "path": "assets/model2__6.stl",
+      "bytes": 86284,
+      "git_blob_sha1": "71fc6c2f8b58f4d6c663992c8e96b612c0f4ed22",
+      "sha256": "888b5919d10dbfb59b964c3cafc2ddbdac3b5426e20dd13bcaf4baedd5ee15c9"
+    },
+    {
+      "path": "assets/model2__7.stl",
+      "bytes": 52084,
+      "git_blob_sha1": "1aef9c141dcc6135568c61c9c86ea9178e024b0c",
+      "sha256": "2d64b18f1e70b0460eb53335d340b7c879976a3093ec67b07bcb7245e371a91d"
+    },
+    {
+      "path": "assets/model2__8.stl",
+      "bytes": 524284,
+      "git_blob_sha1": "ad2475d4f51d59cd6fd8f4975ea53f2ea6321dad",
+      "sha256": "db3708da6b14daf3fc9a1909a8325b68f65ff69146cdd20b69a9ddc4ce51f50d"
+    },
+    {
+      "path": "assets/model2__9.stl",
+      "bytes": 52084,
+      "git_blob_sha1": "e6287e0473db5b240be759fd44a63cdac8ae4536",
+      "sha256": "74969d09b8b7f75cc984c5c7e5526d2941c6724f48b3efa1fa8730cc7820f4f5"
+    },
+    {
+      "path": "yam_linear_4310.xml",
+      "bytes": 16991,
+      "git_blob_sha1": "d2ff0819fc3815e12dc5fd4ea6379eb295663c31",
+      "sha256": "beb1ccea8eefc3e181a562459fb55626e4beb7ef63eb0ceac55bdf8f24c63434"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robo_mj_bench"
+version = "0.2.0"
+description = "A MuJoCo robotics benchmark for vision-based LLM agents with a standard YAM arm, eight tabletop tasks, and private ground-truth scoring"
+requires-python = ">=3.11"
+dependencies = ["mujoco>=3.2,<4", "numpy>=2,<3", "Pillow>=11,<13"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+robo_mj_bench = "robo_mj_bench.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+robo_mj_bench = ["models/i2rt_yam/*.xml", "models/i2rt_yam/*.json", "models/i2rt_yam/*.md", "models/i2rt_yam/LICENSE", "models/i2rt_yam/assets/*", "models/i2rt_yam/assets/linear_4310/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

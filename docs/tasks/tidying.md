@@ -1,0 +1,7 @@
+# Block tidying and lid
+
+The standard YAM arm must put four rigid blocks completely inside a fixed open box, close its removable rigid lid, release everything, and withdraw. Floor and four walls are collision geometry; the lid and all blocks are dynamic rigid bodies. Positions and block starting orientations vary by episode. Only camera images and robot telemetry reveal the scene.
+
+Each completely contained, released and stationary block earns 20 points. All eight oriented corners must fit inside the walls, above the floor and below the rim. The remaining 20 points require all four blocks packed and a stationary, released lid flush with the rim: center within 2 mm, yaw within approximately 1.43 degrees (half turns allowed), tilt within approximately 2.56 degrees, and every corner within 1.5 mm of its intended height. No lid credit is given while any block is outside. Robot contact disqualifies the contacted block or lid. Linear and angular body velocity components must each be below 0.03 m/s or rad/s respectively.
+
+Submission advances physics for one second; full success must persist through the shared final half-second sampling window. Scene geometry, corner checks, velocities, contacts and scores are private evaluator data. The public instruction exposes no target poses or hidden answers. This is a rigid-body simulation task, not evidence of real-world manipulation performance. No agent-controlled reset, teleport or task-state endpoint is provided.
