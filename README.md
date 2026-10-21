@@ -23,6 +23,28 @@ HTTP client, public instructions, and the immutable robot-only model for local
 kinematics. The API never returns object poses,
 episode seeds, rewards, success flags, or evaluator data.
 
+## Task previews
+
+The button GIF shows a successful scripted RGB-only HTTP diagnostic rollout.
+The other seven GIFs show initial task scenes with small scripted arm motions;
+they are **scene previews, not successful task demonstrations or LLM results**.
+Pouring uses granular beads and writing uses a contact-writing proxy.
+
+| Button — diagnostic rollout | Placement — scene preview |
+|---|---|
+| ![YAM pressing a button](docs/media/button.gif) | ![Placement scene preview](docs/media/placement.gif) |
+| **Pouring — scene preview** | **Tidying — scene preview** |
+| ![Granular pouring scene preview](docs/media/pouring.gif) | ![Tidying scene preview](docs/media/tidying.gif) |
+| **Shape matching — scene preview** | **Writing — scene preview** |
+| ![Shape matching scene preview](docs/media/shape_matching.gif) | ![Contact writing scene preview](docs/media/writing.gif) |
+| **Tower — scene preview** | **Measurement — scene preview** |
+| ![Tower scene preview](docs/media/tower.gif) | ![Measurement scene preview](docs/media/measurement.gif) |
+
+Regenerate scene previews with `.venv/bin/python scripts/render_task_previews.py`.
+To use a recorded button rollout, add
+`--button-video artifacts/yam-button-e2e-v1/seed-101/button.mp4`.
+Rendering requires OpenGL; video conversion additionally requires `ffmpeg`.
+
 ## Run locally
 
 Python 3.11+ and an OpenGL-capable environment are required.
