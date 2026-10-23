@@ -187,6 +187,13 @@ validation remain future evaluation work.
 
 ## Results and provenance
 
+The [button chat development pilot](docs/evaluations/button-chat-pilot.md)
+completed **5/5 randomized episodes successfully** using visual decisions in the
+current chat and public robot-only IK, with exact action replay verification.
+This chat shares implementation context; it is **not an independent GPT score**.
+Separate ChatGPT-signed-in CLI inference timed out, so no independent CLI-model
+robotics success rate has been measured.
+
 `result.json` includes `valid`, `success`, `score`, `termination`, physical
 diagnostics, usage, the private seed, a scene hash, MuJoCo version, robot identity,
 and upstream source revision. Historical videos

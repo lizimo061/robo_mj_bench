@@ -1,0 +1,129 @@
+{
+  "kind": "interactive_development_pilot",
+  "task": "button",
+  "controller": "current chat model + public robot-only IK",
+  "independent_model_evaluation": false,
+  "note": "Chat has implementation context; local host is not an adversarial sandbox.",
+  "planned_episodes": 5,
+  "runs": [
+    {
+      "episode": 1,
+      "valid": true,
+      "success": true,
+      "score": 100,
+      "termination": "submitted",
+      "usage": {
+        "requests": 23,
+        "observations": 8,
+        "commands": 9,
+        "commanded_sim_seconds": 8.6,
+        "wall_seconds": 148.96104562500113
+      },
+      "sim_time": 8.599999999999541
+    },
+    {
+      "episode": 2,
+      "valid": true,
+      "success": true,
+      "score": 100,
+      "termination": "submitted",
+      "usage": {
+        "requests": 23,
+        "observations": 8,
+        "commands": 9,
+        "commanded_sim_seconds": 8.6,
+        "wall_seconds": 148.92827741699875
+      },
+      "sim_time": 8.599999999999541
+    },
+    {
+      "episode": 3,
+      "valid": true,
+      "success": true,
+      "score": 100,
+      "termination": "submitted",
+      "usage": {
+        "requests": 23,
+        "observations": 8,
+        "commands": 9,
+        "commanded_sim_seconds": 8.6,
+        "wall_seconds": 148.9076425000021
+      },
+      "sim_time": 8.599999999999541
+    },
+    {
+      "episode": 4,
+      "valid": true,
+      "success": true,
+      "score": 100,
+      "termination": "submitted",
+      "usage": {
+        "requests": 26,
+        "observations": 8,
+        "commands": 12,
+        "commanded_sim_seconds": 11.6,
+        "wall_seconds": 148.88806420900073
+      },
+      "sim_time": 11.600000000000543
+    },
+    {
+      "episode": 5,
+      "valid": true,
+      "success": true,
+      "score": 100,
+      "termination": "submitted",
+      "usage": {
+        "requests": 23,
+        "observations": 8,
+        "commands": 9,
+        "commanded_sim_seconds": 8.6,
+        "wall_seconds": 148.87010791699868
+      },
+      "sim_time": 8.599999999999541
+    }
+  ],
+  "completed_episodes": 5,
+  "valid_episodes": 5,
+  "successes": 5,
+  "observed_success_rate": 1.0,
+  "independent_chatgpt_cli_trials_completed": 0,
+  "chatgpt_cli_status": "inference_preflight_timed_out",
+  "model_id": "current_chat_model_not_independently_attested",
+  "same_chat_context_across_episodes": true,
+  "layout_seeds_exposed_during_control": false,
+  "evaluator_results_exposed_during_control": false,
+  "scripted_vision_detector_used": false,
+  "public_robot_ik_used": true,
+  "exact_action_replays": [
+    {
+      "episode": 1,
+      "exact_replay": true,
+      "peak_button_force_n": 0.9069845182410898,
+      "max_button_travel_m": 0.009187588434037141
+    },
+    {
+      "episode": 2,
+      "exact_replay": true,
+      "peak_button_force_n": 0.8952671880501052,
+      "max_button_travel_m": 0.009088724518519586
+    },
+    {
+      "episode": 3,
+      "exact_replay": true,
+      "peak_button_force_n": 0.8896393450468683,
+      "max_button_travel_m": 0.009041778803817431
+    },
+    {
+      "episode": 4,
+      "exact_replay": true,
+      "peak_button_force_n": 0.8948665757344287,
+      "max_button_travel_m": 0.009085384593817846
+    },
+    {
+      "episode": 5,
+      "exact_replay": true,
+      "peak_button_force_n": 0.891272177198764,
+      "max_button_travel_m": 0.009055323458054017
+    }
+  ]
+}
