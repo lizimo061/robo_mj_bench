@@ -24,9 +24,18 @@ class Limits:
     max_wall_seconds: float = 1800.0
 
 
-def _robot_projection(raw):
+def _robot_projection(raw, bimanual=False):
     """No arbitrary simulator dictionary is ever returned to the agent."""
     result = {}
+    if bimanual:
+        result["sim_time"] = float(raw["sim_time"])
+        if not math.isfinite(result["sim_time"]):
+            raise RuntimeError("invalid robot telemetry")
+        for side in ("left", "right"):
+            projected = _robot_projection({**raw[side], "sim_time": result["sim_time"]})
+            del projected["sim_time"]
+            result[side] = projected
+        return result
     for key in ("joint_positions", "joint_velocities"):
         values = raw[key]
         if len(values) != len(JOINT_LIMITS) or not all(math.isfinite(float(v)) for v in values):
@@ -127,7 +136,9 @@ class EpisodeService:
             request = validate_request(path, payload)
         except BadRequest:
             return 400, {"error": "invalid_request"}
-        is_motion = path in ("/v1/move_joints", "/v1/set_gripper", "/v1/wait")
+        is_motion = path in ("/v1/move_joints", "/v1/set_gripper", "/v1/wait", "/v1/move_bimanual")
+        if path == "/v1/move_bimanual" and not getattr(self.simulation, "bimanual", False):
+            return 400, {"error": "invalid_request"}
         if path == "/v1/observe" and self._observations >= self.limits.max_observations:
             return 429, {"error": "budget_exhausted"}
         if is_motion and (self._commands >= self.limits.max_commands
@@ -163,7 +174,7 @@ class EpisodeService:
                         clean.save(encoded, format="PNG")
                     response["reference_image_base64"] = base64.b64encode(encoded.getvalue()).decode("ascii")
             elif path == "/v1/robot_state":
-                response = _robot_projection(self.simulation.robot_state())
+                response = _robot_projection(self.simulation.robot_state(), getattr(self.simulation, "bimanual", False))
             elif path == "/v1/observe":
                 self._observations += 1
                 png = self.simulation.observe(request["camera_id"])
@@ -177,13 +188,15 @@ class EpisodeService:
                 # Charge before execution, including commands that fail partway.
                 self._commands += 1
                 self._sim_seconds += request["duration"]
-                if path == "/v1/move_joints":
+                if path == "/v1/move_bimanual":
+                    self.simulation.move_bimanual(request["left"], request["right"], request["duration"])
+                elif path == "/v1/move_joints":
                     self.simulation.move_joints(request["targets"], request["duration"])
                 elif path == "/v1/set_gripper":
                     self.simulation.set_gripper(request["opening"], request["duration"])
                 else:
                     self.simulation.wait(request["duration"])
-                response = {"status": "ok", "sim_time": _robot_projection(self.simulation.robot_state())["sim_time"]}
+                response = {"status": "ok", "sim_time": _robot_projection(self.simulation.robot_state(), getattr(self.simulation, "bimanual", False))["sim_time"]}
             self._record({"event": "response", "path": path, "status": 200})
             return 200, response
         except SafetyStop:

@@ -21,9 +21,19 @@ def render_scene(name, output, seed):
     frames = []
     try:
         for index in range(32):
-            target = list(HOME_JOINTS)
-            target[0] += .06 * math.sin(2 * math.pi * index / 32)
-            simulation.move_joints(target, .125)
+            if getattr(simulation, "bimanual", False):
+                commands = {}
+                for side in ("left", "right"):
+                    target = list(HOME_JOINTS)
+                    if side == "right":
+                        target[0] *= -1
+                    target[0] += .06 * math.sin(2 * math.pi * index / 32)
+                    commands[side] = {"targets": target, "opening": .04}
+                simulation.move_bimanual(**commands, duration=.124)
+            else:
+                target = list(HOME_JOINTS)
+                target[0] += .06 * math.sin(2 * math.pi * index / 32)
+                simulation.move_joints(target, .124)
             canvas = Image.new("RGB", (640, 284), "#101620")
             for camera, x in (("front", 0), ("overhead", 320)):
                 with Image.open(io.BytesIO(simulation.observe(camera))) as image:
@@ -48,9 +58,10 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("docs/media"))
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--button-video", type=Path)
+    parser.add_argument("--tasks", nargs="+", choices=TASK_NAMES, default=TASK_NAMES)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    for name in TASK_NAMES:
+    for name in args.tasks:
         output = args.output / f"{name}.gif"
         if name == "button" and args.button_video is not None:
             # Preserve the original recording's diagnostic and result labels.

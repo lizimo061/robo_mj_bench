@@ -116,8 +116,9 @@ def main():
     (args.run_dir / "manifest.json").write_text(json.dumps({"seed": seed, "task": simulation.public_spec()["task_id"],
         "task_family": args.task,
         "benchmark_version": __version__,
-        "robot": ROBOT_ID, "robot_source_commit": provenance()["commit"],
-        "protocol": 1, "mujoco_version": __import__("mujoco").__version__}, indent=2), encoding="utf-8")
+        "robot": getattr(simulation, "robot_id", ROBOT_ID), "robot_source_commit": provenance()["commit"],
+        "protocol": 2 if getattr(simulation, "bimanual", False) else 1,
+        "mujoco_version": __import__("mujoco").__version__}, indent=2), encoding="utf-8")
     service = EpisodeService(simulation, token, args.run_dir)
     server = HTTPServer((args.host, args.port), handler_for(service))
     print(f"Robot gateway listening on {args.host}:{server.server_port}. Private run: {args.run_dir}", flush=True)

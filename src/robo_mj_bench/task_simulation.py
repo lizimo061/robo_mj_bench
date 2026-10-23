@@ -15,9 +15,11 @@ from .simulation import ButtonSimulation
 
 
 class TaskSimulation(ButtonSimulation):
+    scene_factory = staticmethod(yam_scene)
+
     def __init__(self, task, seed):
         self.task = task
-        root = yam_scene(task.task_id)
+        root = self.scene_factory(task.task_id)
         task.build(root.find("worldbody"), root, random.Random(seed))
         self._initialize_robot(seed, ET.tostring(root, encoding="unicode"), task.assets)
         task.bind(self.model, self.data)
@@ -73,7 +75,7 @@ class TaskSimulation(ButtonSimulation):
         score = 100.0 if success else (min(score, 99.0) if safe else 0.0)
         self._closed = True
         self._report = {
-            "task": self.task.task_id, "robot": ROBOT_ID,
+            "task": self.task.task_id, "robot": getattr(self, "robot_id", ROBOT_ID),
             "benchmark_version": __version__,
             "robot_source_commit": provenance()["commit"], "approximation": self.task.approximation,
             "success": success, "score": score, "safe": safe,

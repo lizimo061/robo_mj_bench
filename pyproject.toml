@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robo_mj_bench"
-version = "0.2.0"
-description = "A MuJoCo robotics benchmark for vision-based LLM agents with a standard YAM arm, eight tabletop tasks, and private ground-truth scoring"
+version = "0.3.0"
+description = "A MuJoCo robotics benchmark for vision-based LLM agents with standard YAM arms, eight single-arm tasks, three bimanual tasks, and private scoring"
 requires-python = ">=3.11"
 dependencies = ["mujoco>=3.2,<4", "numpy>=2,<3", "Pillow>=11,<13"]
 

@@ -1,11 +1,11 @@
 # robo_mj_bench
 
 A MuJoCo robotics benchmark for vision-based LLM agents, featuring a standard
-YAM arm, eight tabletop tasks, and private ground-truth scoring.
+YAM arms, eight single-arm tabletop tasks, three bimanual tasks, and private ground-truth scoring.
 
 An independently implemented, AA-Robotics-inspired benchmark for language-model
 agents controlling a simulated robot from RGB images and robot telemetry.
-Eight task families are implemented with a shared private evaluator and API.
+Eleven task families are implemented with a shared private evaluator and API.
 This is not an official Artificial Analysis benchmark or a physical-score replica.
 
 The robot is the standard **I2RT YAM with linear_4310 gripper and D405 wrist
@@ -40,6 +40,15 @@ Pouring uses granular beads and writing uses a contact-writing proxy.
 | **Tower — scene preview** | **Measurement — scene preview** |
 | ![Tower scene preview](docs/media/tower.gif) | ![Measurement scene preview](docs/media/measurement.gif) |
 
+| Bimanual handover — scene preview | Bimanual tray carry — scene preview |
+|---|---|
+| ![Dual YAM handover scene](docs/media/bimanual_handover.gif) | ![Dual YAM tray scene](docs/media/bimanual_tray.gif) |
+| **Bimanual drawer insertion — scene preview** | |
+| ![Dual YAM drawer scene](docs/media/bimanual_drawer.gif) | |
+
+The bimanual GIFs also show initial scenes with scripted arm motions, not solved tasks.
+See [bimanual tasks and API](docs/tasks/bimanual.md) for coordination requirements.
+
 Regenerate scene previews with `.venv/bin/python scripts/render_task_previews.py`.
 To use a recorded button rollout, add
 `--button-video artifacts/yam-button-e2e-v1/seed-101/button.mp4`.
@@ -56,6 +65,8 @@ python3 -m venv .venv
 .venv/bin/python -m robo_mj_bench.server --run-dir private-runs/demo --seed 7
 # Select another task in a fresh episode:
 .venv/bin/python -m robo_mj_bench.server --task measurement --run-dir private-runs/measure --seed 17
+# Two standard arms, synchronized control:
+.venv/bin/python -m robo_mj_bench.server --task bimanual_tray --run-dir private-runs/dual --seed 17
 ```
 
 The server binds to `127.0.0.1:8765` by default. Each start requires a new run
@@ -120,8 +131,10 @@ errors close the episode and produce an invalid infrastructure result.
 
 - Standard six-joint I2RT YAM, linear_4310 gripper, native wrist camera, three
   external cameras, and bounded actuator commands.
-- Eight task families with randomized scenes and private geometry/contact scoring.
-- Seven authenticated POST endpoints; strict schemas and finite numeric validation.
+- Eleven task families with randomized scenes and private geometry/contact scoring.
+- Dual standard YAM arms for three tasks, synchronized 12-joint/two-gripper control,
+  two wrist cameras, contact-history gates, and inter-arm force stops.
+- Eight authenticated POST endpoints; strict schemas and finite numeric validation.
 - No agent reset, generic simulator endpoint, success/reward feedback, or debug API.
 - Request/image/command/time budgets; terminal submission; private atomic reports.
 - Unit, transport, physics, scoring, and regression tests.
@@ -147,12 +160,22 @@ only. The same robot-only bundle works for every task.
 | `writing` | Trace HELLO WORLD with a physical marker | **Contact-writing proxy**, not general handwriting recognition |
 | `tower` | Build the tallest stable freestanding stack | Physical contact/support/height scoring |
 | `measurement` | Report box dimensions within 2 mm | Private random dimensions; visible physical SI rulers |
+| `bimanual_handover` | Left-to-right airborne baton transfer, then released placement | Ordered bilateral pad contact and continuous hold times |
+| `bimanual_tray` | Carry a loaded tray with both arms, then release on a marked goal | Two-handle lift, persistent spill detection, stable containment |
+| `bimanual_drawer` | Hold a spring-loaded drawer open while inserting a block | Simultaneous left handle/right object grips, held-open terminal window |
+
+The bimanual tasks compose two copies of the same pinned YAM model using fixed
+mounts and namespaced joints. Geometry, inertias, motor gains, limits, finger
+couplings, and internal collision exclusions remain unchanged. The two arms can
+collide; no inter-arm collision exclusions are added. These tasks use
+`move_bimanual`, nested arm telemetry, and separate wrist cameras; see
+[bimanual task details](docs/tasks/bimanual.md).
 
 See [task documentation](docs/tasks) for scoring and limitations. Tests include
 trusted terminal-state fixtures and physical contact checks. The idle HTTP smoke
 script checks startup, four cameras, public goals, submission and terminal 409
 responses for each task, and rejects initially-complete scenes. **These checks
-do not demonstrate that an LLM can solve the seven new tasks.** Only button has
+do not demonstrate that an LLM can solve the other ten tasks.** Only button has
 a demonstrated closed-loop RGB diagnostic policy so far.
 
 Measurement uses `robot.submit({"dimensions_m": [length, width, height]})`;

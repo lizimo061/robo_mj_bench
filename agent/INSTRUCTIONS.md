@@ -116,3 +116,42 @@ Submission remains available after these budgets expire. Failed motion attempts
 consume motion/time allowance. HTTP 400 means invalid input, 401 bad credentials,
 404 unknown endpoint, 409 ended episode, 429 budget exhausted, and 500 an
 infrastructure error. Stop after an infrastructure error.
+
+## Dual-arm episodes
+
+Tasks prefixed `bimanual_` use two standard YAM arms. Their goal text describes
+the required cooperation. `robot_state()` returns `left`, `right`, `sim_time`;
+each arm has six `joint_positions`, six `joint_velocities`, and `gripper_opening`.
+Use `move_bimanual(left, right, duration)`, where each arm command is
+`{"targets": [six joint angles], "opening": meters}`. Both arms and grippers
+move simultaneously over one interval; single-arm motion calls are rejected.
+Durations must be integer multiples of 0.002 s, from 0.02 to 5 s. Existing
+joint limits, joint speed (1.5 rad/s), gripper speed (0.05 m/s), and opening
+range (0 to 0.095 m) apply separately to each arm.
+
+Cameras are `front`, `left`, `overhead`, `wrist_left`, and `wrist_right`.
+The left mount is `(0, -0.32, 0)` with yaw `+0.65` radians, and the right mount
+is `(0, +0.32, 0)` with yaw `-0.65` radians. Left home angles are
+`[-0.6, 1.047, 1.047, 0, 0, 0]`; right home angles are
+`[+0.6, 1.047, 1.047, 0, 0, 0]`. Optional public-model IK supports
+`RobotKinematics(arm="left")` and `RobotKinematics(arm="right")` with world
+targets. It does not plan collision-free paths. Inter-arm contact normal force
+above a summed 35 N ends the episode. All tasks require physical two-pad grips,
+not proximity alone, and a stable final submission window; read the task goal.
+Both pads must carry at least 0.05 N with opposing normals. Final requirements
+must hold throughout the last 0.5 s of the 1 s passive submission window.
+
+- Handover: left-only airborne grip for 0.10 s, both grips for 0.10 s, right-only
+  airborne grip for 0.15 s, then flat released placement on the green pad.
+  Keep the baton above 10 cm without external support during transfer; losing
+  the required supporting grip or setting it down invalidates the transfer.
+- Tray: lift level (up-axis dot world-up above 0.98) for 0.20 s above 9 cm while
+  both arms grip their designated handles and the tray is within 6 cm of its
+  initial xy position. Maintain both grips, levelness, no external support,
+  and tray height above 6 cm until its entire footprint is over the goal.
+  Early set-down, handle loss, or spilling any ball permanently fails the carry.
+  Finish with all cargo inside and the entire tray released, stable on the goal.
+- Drawer: hold the blue handle with the left gripper and open at least 10 cm.
+  The block must cross from outside to fully inside while left holds open and
+  right grips it, followed by 0.10 s of continued coordinated grips inside.
+  Release the block and keep holding the drawer open and steady at submission.

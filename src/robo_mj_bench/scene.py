@@ -1,6 +1,39 @@
 """Compose a task around the unmodified standard YAM robot description."""
 import xml.etree.ElementTree as ET
+from copy import deepcopy
 from .robot_assets import model_xml
+
+# Public, fixed mounting calibration. Each upstream arm is inside a rigid mount.
+DUAL_MOUNTS = {"left": ((0, -.32, 0), .65), "right": ((0, .32, 0), -.65)}
+
+
+def dual_yam_scene(model_name):
+    import math
+    root = yam_scene(model_name)
+    world = root.find("worldbody")
+    original = world.find("body[@name='arm']")
+    world.remove(original)
+    for light in list(world.findall("light")):
+        if light.get("target"):
+            world.remove(light)
+    sections = {name: list(root.find(name)) for name in ("actuator", "equality", "contact")}
+    for name in sections:
+        root.find(name).clear()
+    for side, (position, yaw) in DUAL_MOUNTS.items():
+        def renamed(element):
+            element = deepcopy(element)
+            for node in element.iter():
+                for attr in ("name", "joint", "joint1", "joint2", "body1", "body2"):
+                    if attr in node.attrib:
+                        node.set(attr, side + "_" + node.get(attr))
+            return element
+        mount = ET.SubElement(world, "body", name=side + "_mount",
+                              pos=" ".join(map(str, position)),
+                              quat=f"{math.cos(yaw/2)} 0 0 {math.sin(yaw/2)}")
+        mount.append(renamed(original))
+        for name, elements in sections.items():
+            root.find(name).extend(renamed(element) for element in elements)
+    return root
 
 
 def yam_scene(model_name="yam_button_v1"):

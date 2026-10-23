@@ -77,7 +77,7 @@ class ButtonSimulation:
         }
 
     def observe(self, camera_id):
-        if camera_id not in CAMERA_IDS:
+        if camera_id not in ("front", "left", "overhead", "wrist"):
             raise BadRequest("invalid camera")
         if self._renderer is None:
             self._renderer = mujoco.Renderer(self.model, height=480, width=640)

@@ -53,6 +53,10 @@ class RobotClient:
     def set_gripper(self, opening, duration):
         return self._call("set_gripper", {"opening": opening, "duration": duration})
 
+    def move_bimanual(self, left, right, duration):
+        """Each arm command contains six targets and one gripper opening in meters."""
+        return self._call("move_bimanual", {"left": left, "right": right, "duration": duration})
+
     def wait(self, duration):
         return self._call("wait", {"duration": duration})
 

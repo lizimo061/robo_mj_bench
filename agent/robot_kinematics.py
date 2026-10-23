@@ -16,7 +16,14 @@ def public_model_path():
 
 
 class RobotKinematics:
-    def __init__(self):
+    def __init__(self, arm=None):
+        if arm not in (None, "left", "right"):
+            raise ValueError("arm must be left, right, or None")
+        # Fixed public mounts match the dual-YAM scene; no episode data involved.
+        self.base = np.array([0, -.32 if arm == "left" else .32, 0]) if arm else np.zeros(3)
+        yaw = (.65 if arm == "left" else -.65) if arm else 0
+        self.base_rotation = np.array([[np.cos(yaw), -np.sin(yaw), 0],
+                                       [np.sin(yaw), np.cos(yaw), 0], [0, 0, 1]])
         self.model = mujoco.MjModel.from_xml_path(str(public_model_path()))
         self.data = mujoco.MjData(self.model)
         self.joints = [self.model.joint(f"joint{i}").id for i in range(1, 7)]
@@ -28,7 +35,7 @@ class RobotKinematics:
 
     def downward_pose(self, x, y, height):
         """Solve a downward grasp-site pose using robot geometry and caller targets."""
-        target = np.array([x, y, height])
+        target = self.base_rotation.T @ (np.array([x, y, height]) - self.base)
         jacp, jacr = np.zeros((3, self.model.nv)), np.zeros((3, self.model.nv))
         starts = (self.last, np.array([0, 1.4, 1.8, 0, 0.5, 0]),
                   np.array([0, 2.0, 1.8, 0, -0.5, 0]))

@@ -5,10 +5,10 @@ import numpy as np
 import pytest
 
 from robo_mj_bench.robot_assets import MODEL_PATH
-from robo_mj_bench.tasks.registry import TASK_NAMES, create_simulation
+from robo_mj_bench.tasks.registry import TASK_NAMES, BIMANUAL_TASKS, create_simulation
 
 
-@pytest.mark.parametrize("task_name", TASK_NAMES)
+@pytest.mark.parametrize("task_name", [name for name in TASK_NAMES if name not in BIMANUAL_TASKS])
 def test_task_preserves_standard_robot_parameters(task_name):
     original = mujoco.MjModel.from_xml_path(str(MODEL_PATH))
     simulation = create_simulation(task_name, 23)

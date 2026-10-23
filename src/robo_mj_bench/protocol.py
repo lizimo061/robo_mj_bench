@@ -6,7 +6,7 @@ TIMESTEP = 0.002
 JOINT_LIMITS = ((-2.61799, 3.14159), (0.0, 3.66519), (0.0, 3.14159),
                 (-1.69297, 1.5708), (-1.5708, 1.5708), (-2.0944, 2.0944))
 HOME_JOINTS = (-0.6, 1.047, 1.047, 0.0, 0.0, 0.0)
-CAMERA_IDS = ("front", "left", "overhead", "wrist")
+CAMERA_IDS = ("front", "left", "overhead", "wrist", "wrist_left", "wrist_right")
 MAX_JOINT_SPEED = 1.5
 MAX_GRIPPER_SPEED = 0.05
 SCHEMAS = {
@@ -17,6 +17,7 @@ SCHEMAS = {
     "/v1/set_gripper": {"opening", "duration"},
     "/v1/wait": {"duration"},
     "/v1/submit": set(),
+    "/v1/move_bimanual": {"left", "right", "duration"},
 }
 
 
@@ -47,6 +48,15 @@ def validate_request(path, payload):
     if type(payload) is not dict or (set(payload) != SCHEMAS[path] and not answer_submission):
         raise BadRequest("invalid fields")
     result = dict(payload)
+    if path == "/v1/move_bimanual":
+        for side in ("left", "right"):
+            command = result[side]
+            if type(command) is not dict or set(command) != {"targets", "opening"}:
+                raise BadRequest("invalid arm command")
+            result[side] = {
+                "targets": validate_request("/v1/move_joints", {"targets": command["targets"], "duration": .02})["targets"],
+                "opening": number(command["opening"], 0, .095),
+            }
     if answer_submission:
         answer = result["answer"]
         if type(answer) is not dict or set(answer) != {"dimensions_m"}:

@@ -21,7 +21,7 @@ from PIL import Image, ImageDraw, ImageFont
 from robo_mj_bench.robot_assets import ROBOT_ID, provenance
 from robo_mj_bench.server import handler_for
 from robo_mj_bench.service import EpisodeService
-from robo_mj_bench.tasks.registry import TASK_NAMES, create_simulation
+from robo_mj_bench.tasks.registry import TASK_NAMES, create_simulation, BIMANUAL_TASKS
 
 ROOT = Path(__file__).resolve().parents[1]
 PROBE = '''import base64,json
@@ -32,10 +32,19 @@ goal=r.task()
 assert set(goal) <= {"task_id","instruction","approximation","reference_image_base64"}
 assert all(k in goal for k in ("task_id","instruction","approximation"))
 state=r.robot_state()
-assert set(state)=={"joint_positions","joint_velocities","gripper_opening","sim_time"}
-assert len(state["joint_positions"])==len(state["joint_velocities"])==6
+dual="left" in state
+if dual:
+    assert set(state)=={"left","right","sim_time"}
+    for side in ("left","right"):
+        assert set(state[side])=={"joint_positions","joint_velocities","gripper_opening"}
+        assert len(state[side]["joint_positions"])==len(state[side]["joint_velocities"])==6
+    command={side:{"targets":state[side]["joint_positions"],"opening":state[side]["gripper_opening"]} for side in ("left","right")}
+    r.move_bimanual(command["left"],command["right"],.2)
+else:
+    assert set(state)=={"joint_positions","joint_velocities","gripper_opening","sim_time"}
+    assert len(state["joint_positions"])==len(state["joint_velocities"])==6
 r.wait(.2)
-for camera in ("front","overhead","left","wrist"):
+for camera in (("front","overhead","left","wrist_left","wrist_right") if dual else ("front","overhead","left","wrist")):
     Path(camera+".png").write_bytes(r.observe(camera))
 if "reference_image_base64" in goal:
     Path("reference.png").write_bytes(base64.b64decode(goal["reference_image_base64"]))
@@ -80,15 +89,16 @@ def run_task(name, seed, output):
             (directory / "private" / "client.stderr").write_text(stderr)
             if process.returncode:
                 raise RuntimeError(f"{name} public API probe failed: {stderr}")
-            for filename in ("front.png", "overhead.png", "left.png", "wrist.png", "reference.png"):
+            for filename in ("front.png", "overhead.png", "left.png", "wrist.png", "wrist_left.png", "wrist_right.png", "reference.png"):
                 source = Path(scratch) / filename
                 if source.exists():
                     shutil.copyfile(source, directory / filename)
         report = json.loads((directory / "private" / "result.json").read_text())
         assert report["valid"] and report["termination"] == "submitted", report
         assert not report["success"] and report["score"] < 100, "An idle scene must not start complete"
-        assert report["robot"] == ROBOT_ID
+        assert report["robot"] == getattr(simulation, "robot_id", ROBOT_ID)
         row = {"task_family": name, "task_id": report["task"], "seed": seed,
+               "robot": report["robot"],
                "approximation": simulation.public_spec()["approximation"],
                "idle_score": report["score"], "idle_success": report["success"],
                "api_and_render_ok": True, "sim_time": report["sim_time"]}
@@ -124,7 +134,7 @@ if __name__ == "__main__":
     os.umask(0o077)
     args.output.mkdir(parents=True, exist_ok=False)
     rows = [run_task(name, args.seed, args.output) for name in args.tasks]
-    result = {"kind": "idle_http_scene_integration", "robot": ROBOT_ID,
+    result = {"kind": "idle_http_scene_integration", "robots": sorted({row["robot"] for row in rows}),
               "robot_source_commit": provenance()["commit"], "runs": rows,
               "note": "No manipulation policy or LLM completion is tested by idle runs."}
     (args.output / "summary.json").write_text(json.dumps(result, indent=2))
