@@ -1,0 +1,27 @@
+{
+  "requested_model": "gpt-6.1-sol",
+  "verified_model": null,
+  "reasoning_effort": "low",
+  "chatgpt_login": true,
+  "timeout_seconds": 90.0,
+  "robotics_attempt": false,
+  "usage": null,
+  "elapsed_seconds": 90.02,
+  "process_exit_code": 0,
+  "deadline_expired": true,
+  "event_types": [
+    "thread.started",
+    "turn.started",
+    "error",
+    "error",
+    "error"
+  ],
+  "ready_received": false,
+  "turn_completed": false,
+  "tool_item_seen": false,
+  "error_categories": [
+    "inference_request_timeout",
+    "transport_retry"
+  ],
+  "status": "infrastructure_blocked"
+}

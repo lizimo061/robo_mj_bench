@@ -1,0 +1,37 @@
+[
+  {
+    "stage": "sandboxed_default_model",
+    "status": "local_initialization_blocked",
+    "reason": "operation_not_permitted",
+    "robotics_attempt": false
+  },
+  {
+    "stage": "sandbox_free_default_model",
+    "status": "inference_deadline_expired",
+    "requested_model": "CLI default",
+    "verified_model": null,
+    "deadline_seconds": 50,
+    "elapsed_seconds": 50.02,
+    "ready_received": false,
+    "turn_completed": false,
+    "error_categories": [
+      "inference_request_timeout",
+      "transport_retry"
+    ],
+    "robotics_attempt": false,
+    "usage": null
+  },
+  {
+    "stage": "http_override_setup",
+    "status": "configuration_rejected",
+    "reason": "installed CLI forbids overriding reserved built-in provider openai",
+    "corrective_action": "removed provider override before explicit-model retry",
+    "robotics_attempt": false
+  },
+  {
+    "stage": "sandbox_free_explicit_model",
+    "evidence": "inference-preflight.json",
+    "status": "inference_deadline_expired",
+    "robotics_attempt": false
+  }
+]

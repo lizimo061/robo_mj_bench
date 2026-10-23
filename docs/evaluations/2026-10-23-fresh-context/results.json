@@ -1,0 +1,142 @@
+{
+  "status": "blocked_before_robotics",
+  "start_date_local": "2026-10-23",
+  "report_date_local": "2026-10-24",
+  "timezone": "Asia/Shanghai",
+  "planned_attempts": 55,
+  "initial_coverage_target": 11,
+  "robotics_attempts_started": 0,
+  "completed": 0,
+  "valid": 0,
+  "successful": 0,
+  "infrastructure_invalid_robotics_attempts": 0,
+  "success_rate": null,
+  "failed_inference_preflights": 2,
+  "model_verified": null,
+  "usage": null,
+  "development_pilot_performed": false,
+  "bundle_sha256": "f1ad02b62f1d2948b8805db53993aa4272544fce3c9ca04d0f9f300eac1295a5",
+  "tasks": [
+    {
+      "task": "button",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "placement",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "pouring",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "tidying",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "shape_matching",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "writing",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "tower",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "measurement",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "bimanual_handover",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "bimanual_tray",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    },
+    {
+      "task": "bimanual_drawer",
+      "planned": 5,
+      "started": 0,
+      "completed": 0,
+      "valid": 0,
+      "successful": 0,
+      "success_rate": null,
+      "infrastructure_invalid": 0,
+      "status": "unattempted_inference_blocked"
+    }
+  ]
+}
